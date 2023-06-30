@@ -19,19 +19,23 @@ export default function About() {
 
   // control userform
   const [showUserForm, setShowUserForm] = useState(false);
+  const [dataForm, setDataForm] = useState(null);
   return (
     <div>
       {counterStore.loading ? <Loading /> : <></>}
       <h1>About Page</h1>
-      <button onClick={() => setShowUserForm(true)}>Add New User</button>
-      {
-        showUserForm ? <UserForm dataForm = {{
+      <button onClick={() => {
+        setShowUserForm(true)
+        setDataForm({
           functionCloseForm: setShowUserForm,
           type: "add",
           functionSubmit: counterActions.createNewUsers
-        }}/> : <></>
+        })
+      }}>Add New User</button>
+      {
+        showUserForm ? <UserForm dataForm={dataForm} /> : <></>
       }
-      
+
       <br />
       {counterStore.users.map((user) =>
         <Fragment>
@@ -39,10 +43,19 @@ export default function About() {
           <button onClick={() => {
             dispatch(counterActions.deleteUserById(user.id))
           }} type='button' className='btn btn-danger'>Delete</button>
+          <button onClick={() => {
+            setShowUserForm(true)
+            setDataForm({
+              functionCloseForm: setShowUserForm,
+              type: "update",
+              functionSubmit: counterActions.updateUser,
+              preData: user
+            })
+          }} className='btn btn-success'>Edit</button>
         </Fragment>
       )}
       <br />
-      
+
       <Outlet></Outlet>
     </div>
   )

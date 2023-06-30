@@ -22,8 +22,16 @@ export default function UserForm(props) {
                     console.log("da vao add", newUser)
                     dispatch(props.dataForm.functionSubmit(newUser))
                 }
+                if (props.dataForm.type == "update") {
+                    dispatch(props.dataForm.functionSubmit({
+                        userId: props.dataForm.preData.id,
+                        editData: newUser
+                    }))
+                }
                 // reset form
                 e.target.userName.value = ""
+                e.target.userEmail.value = ""
+                e.target.userPhoneNumber.value = ""
                 // props.dataForm.functionCloseForm(false)
                 e.target.cancel.click()
             }}>
@@ -41,6 +49,7 @@ export default function UserForm(props) {
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         name="userName"
+                        defaultValue={props.dataForm.preData != null ? props.dataForm.preData.name: ""}
                     />
                 </div>
                 {/* INput User Email */}
@@ -51,12 +60,13 @@ export default function UserForm(props) {
                         </span>
                     </div>
                     <input
-                        type="email"
+                        type="text"
                         className="form-control"
                         placeholder="UserEmail"
                         aria-label="UserEmail"
                         aria-describedby="basic-addon1"
                         name="userEmail"
+                        defaultValue={props.dataForm.preData != null ? props.dataForm.preData.email: ""}
                     />
                 </div>
                 {/* INput User Phone Number */}
@@ -73,9 +83,12 @@ export default function UserForm(props) {
                         aria-label="UserPhoneNumber"
                         aria-describedby="basic-addon1"
                         name="userPhoneNumber"
+                        defaultValue={props.dataForm.preData != null ? props.dataForm.preData.phoneNumber: ""}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">{props.dataForm.type == "add" ? "Add" : "Save"}</button>
+                <button type="submit" className="btn btn-primary">
+                    {props.dataForm.type == "add" ? "Add" : "Save"}
+                </button>
                 <button type="button" className="btn btn-secondary" name='cancel' onClick={() => {
                     props.dataForm.functionCloseForm(false)
                 }}>Hủy</button>

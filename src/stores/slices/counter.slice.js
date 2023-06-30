@@ -27,6 +27,16 @@ const deleteUserById = createAsyncThunk(
     }
 )
 
+const updateUser = createAsyncThunk(
+    "updateUser",
+    async (dataObj) => {
+        console.log(dataObj)
+        // http://localhost:4000/users
+        let res = await axios.put(process.env.REACT_APP_SERVER_JSON + "users/"+ dataObj.userId , dataObj.editData);
+        return res.data
+    }
+)
+
 const counterSlice = createSlice({
     name: "counter",
     initialState: {
@@ -86,6 +96,26 @@ const counterSlice = createSlice({
             state.loading = false;
             console.log("da vao rejected")
         });
+
+        // edit user
+        builder.addCase(updateUser.pending, (state, action) => {
+            state.loading = true;
+            console.log("da vao pending")
+        });
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.loading = false;
+            console.log("da vao fullfill", action.payload)
+            state.users = state.users.map((user) => {
+                if (user.id == action.payload.id) {
+                    return action.payload
+                }
+                return user
+            })
+        });
+        builder.addCase(updateUser.rejected, (state, action) => {
+            state.loading = false;
+            console.log("da vao rejected")
+        });
     }
 })
 
@@ -94,7 +124,8 @@ export const counterActions = {
     ...counterSlice.actions,
     findAllUsers,
     createNewUsers,
-    deleteUserById
+    deleteUserById,
+    updateUser
 }
 
 export default counterSlice.reducer;

@@ -1,8 +1,16 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "name": "Jack"
-        }
-    ]
+  "users": [
+    {
+      "name": "tai",
+      "email": "tai@gmail.com",
+      "phoneNumber": "0123",
+      "id": 1
+    },
+    {
+      "name": "hung",
+      "email": "hung@gmail.com",
+      "phoneNumber": "01234",
+      "id": 2
+    }
+  ]
 }
